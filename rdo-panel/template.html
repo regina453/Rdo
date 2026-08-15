@@ -1,0 +1,729 @@
+<!doctype html>
+<title>Painel RDO</title>
+<style>
+@font-face {
+  font-family: 'Kanit';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_KANIT500__) format('woff2');
+}
+@font-face {
+  font-family: 'Kanit';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_KANIT600__) format('woff2');
+}
+@font-face {
+  font-family: 'Kanit';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_KANIT700__) format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_LATO700__) format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_LATO900__) format('woff2');
+}
+@font-face {
+  font-family: 'Raleway';
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_RALEWAY__) format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_IPM400__) format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_IPM500__) format('woff2');
+}
+
+:root {
+  --bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-2: #F7F7F7;
+  --border: #C9CCD6;
+  --grid: #D6D9E0;
+  --head: #F0F1F5;
+  --text: #1B2140;
+  --text-2: #565C82;
+  --text-3: #8D91B5;
+  --navy: #071389;
+  --navy-2: #2A3699;
+  --lime: #E0E31A;
+  --lime-ink: #5C5E00;
+  --ok: #1B8A54;
+  --ok-soft: #E3F5E9;
+  --warn: #93650A;
+  --warn-soft: #FCF0D6;
+  --critical: #AE3327;
+  --critical-soft: #FBE2DF;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+
+.wrap {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--navy);
+}
+.head-left { min-width: 0; display: flex; gap: 16px; align-items: flex-start; }
+
+.brandmark {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 46px;
+}
+.brand-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.head-text { min-width: 0; }
+.eyebrow {
+  font-family: 'Kanit', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lime-ink);
+  background: var(--lime);
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 4px;
+  margin: 0 0 10px;
+}
+.title {
+  font-family: 'Lato', sans-serif;
+  font-weight: 900;
+  font-size: clamp(30px, 5vw, 40px);
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+  margin: 0;
+  text-wrap: balance;
+  color: var(--text);
+}
+.subtitle {
+  color: var(--text-2);
+  margin: 8px 0 0;
+  font-size: 14.5px;
+  max-width: 48ch;
+}
+.head-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Kanit', sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ok);
+  background: var(--ok-soft);
+  border: 1px solid color-mix(in srgb, var(--ok) 35%, transparent);
+  padding: 5px 10px 5px 8px;
+  border-radius: 100px;
+}
+.sync-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ok);
+  flex-shrink: 0;
+}
+.sync-time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 14px 16px;
+}
+.stat-label {
+  font-family: 'Kanit', sans-serif;
+  font-size: 12px;
+  color: var(--text-2);
+  margin: 0 0 8px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.stat-value {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1;
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--navy);
+}
+.stat-value .of {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--text-3);
+}
+.stat-value.critical { color: var(--critical); }
+.stat-value.ok { color: var(--ok); }
+.stat-sub {
+  font-size: 12.5px;
+  color: var(--text-3);
+  margin: 6px 0 0;
+}
+
+.section-label {
+  font-family: 'Kanit', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin: 0 0 10px;
+  padding: 0 4px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--grid);
+  margin-bottom: 28px;
+}
+table.rdo-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  background: var(--surface);
+}
+table.rdo-table col.c-obra { width: 20%; }
+table.rdo-table col.c-resp { width: 14%; }
+table.rdo-table col.c-rel { width: 7%; }
+table.rdo-table col.c-criacao { width: 10%; }
+table.rdo-table col.c-envio { width: 13%; }
+table.rdo-table col.c-ultimo { width: 20%; }
+table.rdo-table col.c-status { width: 16%; }
+table.rdo-table th,
+table.rdo-table td {
+  border: 1px solid var(--grid);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: middle;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+table.rdo-table thead th {
+  background: var(--head);
+  font-family: 'Kanit', sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  border-bottom: 2px solid var(--navy);
+}
+table.rdo-table td.obra-cell {
+  font-weight: 600;
+  color: var(--text);
+}
+table.rdo-table td.mono {
+  font-family: 'IBM Plex Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+table.rdo-table td.fill-ok { background: var(--ok-soft); color: var(--ok); font-weight: 600; }
+table.rdo-table td.fill-warn { background: var(--warn-soft); color: var(--warn); font-weight: 600; }
+table.rdo-table td.fill-critical { background: var(--critical-soft); color: var(--critical); font-weight: 700; }
+table.rdo-table td .sub {
+  display: block;
+  font-family: 'Raleway', sans-serif;
+  font-size: 10.5px;
+  color: var(--text-3);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+/* linha clicável / expansível */
+tr.row-summary { cursor: pointer; }
+tr.row-summary:hover td { background-color: var(--surface-2); }
+tr.row-summary:hover td.fill-ok,
+tr.row-summary:hover td.fill-warn,
+tr.row-summary:hover td.fill-critical { filter: brightness(0.97); }
+.chevron {
+  display: inline-block;
+  width: 0.9em;
+  color: var(--navy);
+  font-family: 'Kanit', sans-serif;
+  transition: transform 0.15s ease;
+}
+tr.row-summary.open .chevron { transform: rotate(90deg); }
+
+tr.row-detail { display: none; }
+tr.row-detail.open { display: table-row; }
+tr.row-detail > td {
+  background: var(--surface-2);
+  padding: 18px;
+}
+.detail-block { max-width: 100%; }
+.detail-heading {
+  font-family: 'Kanit', sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin: 0 0 8px;
+}
+.detail-heading:not(:first-child) { margin-top: 20px; }
+.detail-table-wrap { overflow-x: auto; border: 1px solid var(--grid); }
+table.detail-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 12px;
+  background: var(--surface);
+}
+table.detail-table th, table.detail-table td {
+  border: 1px solid var(--grid);
+  padding: 6px 8px;
+  text-align: left;
+  vertical-align: middle;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+table.detail-table thead th {
+  background: var(--head);
+  font-family: 'Kanit', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+table.detail-table td.mono { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+table.detail-table td.fill-ok { background: var(--ok-soft); color: var(--ok); font-weight: 600; }
+table.detail-table td.fill-warn { background: var(--warn-soft); color: var(--warn); font-weight: 600; }
+table.detail-table td.fill-critical { background: var(--critical-soft); color: var(--critical); font-weight: 700; }
+table.detail-table td .sub { display: block; font-family: 'Raleway', sans-serif; font-size: 10px; color: var(--text-3); font-weight: 400; margin-top: 2px; }
+
+.detail-row-layout {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.detail-table-flex { flex: 1 1 460px; min-width: 0; }
+.detail-side { flex: 0 0 170px; display: flex; }
+.realizado-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  background: var(--head);
+  border: 1px solid var(--navy);
+  padding: 16px 12px;
+}
+.realizado-card .stat-label { font-size: 11px; }
+.realizado-value {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1;
+  margin: 0;
+}
+.realizado-value.ok { color: var(--ok); }
+.realizado-value.warn { color: var(--warn); }
+.realizado-value.critical { color: var(--critical); }
+.realizado-card .stat-sub { font-size: 10.5px; margin: 0; }
+@media (max-width: 640px) {
+  .detail-side { flex-basis: auto; }
+}
+
+.inactive-summary {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  background: var(--surface);
+  border: 1px solid var(--grid);
+  border-radius: 2px;
+  padding: 14px 16px;
+  margin-bottom: 28px;
+}
+.inactive-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.inactive-item .n {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--text-2);
+}
+.inactive-item .l {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.note {
+  background: var(--surface-2);
+  border: 1px dashed var(--border);
+  border-radius: 2px;
+  padding: 16px 18px;
+  font-size: 13.5px;
+  color: var(--text-2);
+}
+.note strong { color: var(--text); }
+.note code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.foot {
+  margin-top: 24px;
+  text-align: center;
+  font-family: 'Kanit', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+</style>
+
+<div class="wrap">
+  <div class="head">
+    <div class="head-left">
+      <div class="brandmark" aria-hidden="true">
+        <img class="brand-logo" alt="" src="data:image/png;base64,__LOGO_LIGHT__">
+      </div>
+      <div class="head-text">
+        <p class="eyebrow">Controle de obras</p>
+        <h1 class="title">Painel RDO</h1>
+        <p class="subtitle">Mostra se o Relatório Diário de Obra foi preenchido hoje em cada obra ativa, e quando foi o último registro.</p>
+      </div>
+    </div>
+    <div class="head-right">
+      <span class="sync-badge"><span class="dot"></span>Dados reais</span>
+      <span class="sync-time" id="sync-time"></span>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <p class="section-label">Obras ativas <span style="color:var(--text-3); font-weight:400; text-transform:none; letter-spacing:0;">— clique numa linha para ver o histórico e o avanço das atividades</span></p>
+  <div class="table-wrap">
+    <table class="rdo-table">
+      <colgroup>
+        <col class="c-obra"><col class="c-resp"><col class="c-rel"><col class="c-criacao"><col class="c-envio"><col class="c-ultimo"><col class="c-status">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Obra</th>
+          <th>Responsável</th>
+          <th>Relatório</th>
+          <th>Criação</th>
+          <th>Envio</th>
+          <th>Último RDO</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="active-list"></tbody>
+    </table>
+  </div>
+
+  <p class="section-label">Fora de acompanhamento</p>
+  <div class="inactive-summary" id="inactive-summary"></div>
+
+  <div class="note">
+    <strong>Como isto é mantido atualizado.</strong> Este painel é gerado automaticamente a partir da API do App Diário de Obra e republicado neste mesmo link em intervalos regulares — não é preciso atualizar manualmente.
+  </div>
+
+  <p class="foot">Painel interno ENGM · Não é um canal oficial</p>
+</div>
+
+<script>
+(function () {
+  var RDO_DATA = __RDO_DATA_JSON__;
+
+  var now = new Date();
+
+  function parseBR(s) {
+    // "DD/MM/YYYY HH:mm"
+    var parts = s.split(" ");
+    var d = parts[0].split("/");
+    var t = (parts[1] || "00:00").split(":");
+    return new Date(+d[2], +d[1] - 1, +d[0], +t[0], +t[1]);
+  }
+
+  function dayDiff(date) {
+    var a = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    var b = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.round((b - a) / 86400000);
+  }
+
+  function calDayDiff(a, b) {
+    // dias de calendário entre a e b (b - a), ignorando hora
+    var da = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+    var db = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+    return Math.round((db - da) / 86400000);
+  }
+
+  function fmtDuration(ms) {
+    var mins = Math.round(ms / 60000);
+    if (mins < 1) return "poucos minutos";
+    if (mins < 60) return mins + "min";
+    var hours = Math.round(mins / 60);
+    if (hours < 24) return hours + "h";
+    var days = Math.round(hours / 24);
+    return days + (days === 1 ? " dia" : " dias");
+  }
+
+  function criacaoInfo(dataRefStr, criadoDate) {
+    var dataRef = parseBR(dataRefStr);
+    var d = calDayDiff(dataRef, criadoDate);
+    var level = d <= 0 ? "ok" : (d === 1 ? "warn" : "critical");
+    var label = d <= 0 ? "mesmo dia" : "+" + d + (d === 1 ? " dia" : " dias");
+    return { label: label, level: level };
+  }
+
+  function envioInfo(statusId, criadoDate, modDate) {
+    if (statusId === 1) return { label: "ainda não enviado", level: "critical" };
+    var hours = (modDate - criadoDate) / 3600000;
+    var level = hours < 24 ? "ok" : (hours < 72 ? "warn" : "critical");
+    return { label: fmtDuration(modDate - criadoDate), level: level };
+  }
+
+  function classify(diff, statusId) {
+    var enviado = statusId !== 1; // status 1 = Preenchendo (rascunho, nunca enviado p/ revisão)
+    if (!enviado) {
+      // relatório criado mas nunca enviado: só é aceitável enquanto ainda é "hoje"
+      return diff <= 0 ? "warn" : "critical";
+    }
+    if (diff <= 0) return "ok";
+    if (diff === 1) return "warn";
+    return "critical";
+  }
+
+  function pillLabel(level, diff, statusId) {
+    var enviado = statusId !== 1;
+    if (!enviado) {
+      return diff <= 0 ? "Em preenchimento" : "Não enviado — " + diff + (diff === 1 ? " dia" : " dias");
+    }
+    if (level === "ok") return "RDO de hoje ✓";
+    if (level === "warn") return "Pendente hoje";
+    return "Atrasado — " + diff + (diff === 1 ? " dia" : " dias");
+  }
+
+  function relLabel(diff) {
+    if (diff <= 0) return "hoje";
+    if (diff === 1) return "ontem";
+    if (diff < 60) return "há " + diff + " dias";
+    var months = Math.round(diff / 30);
+    return "há ~" + months + (months === 1 ? " mês" : " meses");
+  }
+
+  var fmtDate = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  var fmtDateShort = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit" });
+  var fmtTime = new Intl.DateTimeFormat("pt-BR", { hour: "2-digit", minute: "2-digit" });
+
+  function realizadoNaDataInfo(v) {
+    if (v === null || v === undefined) return { label: "—", level: "" };
+    var r = Math.round(v * 10) / 10;
+    var level = r >= 70 ? "ok" : (r >= 30 ? "warn" : "critical");
+    return { label: r.toFixed(1) + "%", level: level };
+  }
+
+  function buildTimelineTable(timeline) {
+    var rows = timeline.map(function (t) {
+      var criado = parseBR(t.criadoHora);
+      var modificado = parseBR(t.modificadoHora);
+      var ci = criacaoInfo(t.data, criado);
+      var ei = envioInfo(t.statusId, criado, modificado);
+      var statusLevel = t.statusId !== 1 ? (t.statusId === 4 ? "ok" : "warn") : "warn";
+      var rd = realizadoNaDataInfo(t.realizadoNaData);
+      return '<tr>' +
+        '<td class="mono">nº' + t.numero + '</td>' +
+        '<td class="mono">' + fmtDateShort.format(parseBR(t.data)) + '</td>' +
+        '<td>' + t.criadoPor + '</td>' +
+        '<td class="fill-' + ci.level + '">' + ci.label + '<span class="sub">' + fmtDateShort.format(criado) + ' · ' + fmtTime.format(criado) + '</span></td>' +
+        '<td class="fill-' + ei.level + '">' + ei.label + (t.modificadoPor ? '<span class="sub">por ' + t.modificadoPor + '</span>' : '') + '</td>' +
+        '<td class="fill-' + statusLevel + '">' + t.statusDescricao + '</td>' +
+        '<td class="mono' + (rd.level ? ' fill-' + rd.level : '') + '">' + rd.label + '</td>' +
+      '</tr>';
+    }).join("");
+    return '<div class="detail-table-wrap"><table class="detail-table"><thead><tr>' +
+      '<th>Nº</th><th>Data</th><th>Responsável</th><th>Criação</th><th>Mudança de status</th><th>Status</th><th>Realizado geral</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function buildRealizadoCard(p) {
+    if (!p || p.realizado === null || p.realizado === undefined) {
+      return '<div class="realizado-card"><p class="stat-label">Realizado</p><p class="stat-sub">Cronograma indisponível</p></div>';
+    }
+    var realizado = Number(p.realizado) || 0;
+    var level = realizado >= 70 ? "ok" : (realizado >= 30 ? "warn" : "critical");
+    return '<div class="realizado-card">' +
+      '<p class="stat-label">Realizado</p>' +
+      '<p class="realizado-value ' + level + '">' + realizado.toFixed(2) + '%</p>' +
+      '<p class="stat-sub">avanço geral do cronograma</p>' +
+    '</div>';
+  }
+
+  function buildDetailContent(o) {
+    return '<p class="detail-heading">Histórico de relatórios</p>' +
+      '<div class="detail-row-layout">' +
+        '<div class="detail-table-flex">' + buildTimelineTable(o.timeline || []) + '</div>' +
+        '<div class="detail-side">' + buildRealizadoCard(o.progresso) + '</div>' +
+      '</div>';
+  }
+
+  var enriched = RDO_DATA.obras.map(function (o) {
+    var date = parseBR(o.dataHora);
+    var modDate = parseBR(o.modificadoHora);
+    var diff = dayDiff(date);
+    return {
+      nome: o.nome,
+      numero: o.numero,
+      responsavel: o.responsavel,
+      date: date,
+      diff: diff,
+      statusId: o.statusId,
+      level: classify(diff, o.statusId),
+      criacao: criacaoInfo(o.data, date),
+      envio: envioInfo(o.statusId, date, modDate),
+      timeline: o.timeline,
+      progresso: o.progresso
+    };
+  }).sort(function (a, b) {
+    var order = { critical: 0, warn: 1, ok: 2 };
+    if (order[a.level] !== order[b.level]) return order[a.level] - order[b.level];
+    return b.diff - a.diff;
+  });
+
+  var feitosHoje = enriched.filter(function (o) { return o.level === "ok"; }).length;
+  var atrasadas = enriched.filter(function (o) { return o.level === "critical"; });
+  var pior = atrasadas.slice().sort(function (a, b) { return b.diff - a.diff; })[0];
+  var comDesvio = enriched.filter(function (o) {
+    return o.level !== "ok" || o.criacao.level !== "ok" || o.envio.level !== "ok";
+  });
+
+  var stats = document.getElementById("stats");
+  stats.innerHTML =
+    '<div class="stat">' +
+      '<p class="stat-label">RDO de hoje enviado</p>' +
+      '<p class="stat-value ' + (feitosHoje === enriched.length ? "ok" : "") + '">' + feitosHoje + '<span class="of">de ' + enriched.length + ' obras</span></p>' +
+      '<p class="stat-sub">' + (enriched.length - feitosHoje) + ' ainda sem registro hoje</p>' +
+    '</div>' +
+    '<div class="stat">' +
+      '<p class="stat-label">Obras com desvio</p>' +
+      '<p class="stat-value ' + (comDesvio.length ? "critical" : "ok") + '">' + comDesvio.length + '<span class="of">de ' + enriched.length + ' obras</span></p>' +
+      '<p class="stat-sub">atraso, criação tardia ou envio parado</p>' +
+    '</div>' +
+    '<div class="stat">' +
+      '<p class="stat-label">Situação mais crítica</p>' +
+      '<p class="stat-value critical" style="font-size:18px; line-height:1.3;">' + (pior ? pior.nome : "—") + '</p>' +
+      '<p class="stat-sub">' + (pior ? relLabel(pior.diff) + " sem relatório" : "Nenhuma obra atrasada") + '</p>' +
+    '</div>';
+
+  var activeList = document.getElementById("active-list");
+  activeList.innerHTML = enriched.map(function (o, idx) {
+    var rowId = "detail-" + idx;
+    var summary = '<tr class="row-summary" data-target="' + rowId + '">' +
+      '<td class="obra-cell"><span class="chevron">▸</span> ' + o.nome + '</td>' +
+      '<td>' + o.responsavel + '</td>' +
+      '<td class="mono">nº' + o.numero + '</td>' +
+      '<td class="fill-' + o.criacao.level + '">' + o.criacao.label + '</td>' +
+      '<td class="fill-' + o.envio.level + '">' + o.envio.label + '</td>' +
+      '<td class="mono">' + fmtDate.format(o.date) + ' · ' + fmtTime.format(o.date) +
+        '<span class="sub">' + (o.statusId === 1 ? "criado, não enviado" : "enviado") + ' · ' + relLabel(o.diff) + '</span>' +
+      '</td>' +
+      '<td class="fill-' + o.level + '">' + pillLabel(o.level, o.diff, o.statusId) + '</td>' +
+    '</tr>';
+    var detail = '<tr class="row-detail" id="' + rowId + '"><td colspan="7">' +
+      '<div class="detail-block">' + buildDetailContent(o) + '</div>' +
+    '</td></tr>';
+    return summary + detail;
+  }).join("");
+
+  activeList.querySelectorAll("tr.row-summary").forEach(function (row) {
+    row.addEventListener("click", function () {
+      var detailRow = document.getElementById(row.getAttribute("data-target"));
+      var opening = !row.classList.contains("open");
+      row.classList.toggle("open", opening);
+      if (detailRow) detailRow.classList.toggle("open", opening);
+    });
+  });
+
+  var inactiveSummary = document.getElementById("inactive-summary");
+  inactiveSummary.innerHTML =
+    '<div class="inactive-item"><span class="n">' + RDO_DATA.concluidas + '</span><span class="l">obras concluídas</span></div>' +
+    '<div class="inactive-item"><span class="n">' + RDO_DATA.paralisadas + '</span><span class="l">obras paralisadas</span></div>';
+
+  document.getElementById("sync-time").textContent =
+    "Sincronizado em " + fmtDate.format(RDO_DATA.syncedAt ? new Date(RDO_DATA.syncedAt) : now) + " às " + fmtTime.format(RDO_DATA.syncedAt ? new Date(RDO_DATA.syncedAt) : now);
+})();
+</script>

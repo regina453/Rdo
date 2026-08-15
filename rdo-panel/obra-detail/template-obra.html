@@ -1,0 +1,431 @@
+<!doctype html>
+<title>Detalhamento RNEST</title>
+<style>
+@font-face {
+  font-family: 'Kanit';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_KANIT500__) format('woff2');
+}
+@font-face {
+  font-family: 'Kanit';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_KANIT600__) format('woff2');
+}
+@font-face {
+  font-family: 'Kanit';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_KANIT700__) format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_LATO700__) format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_LATO900__) format('woff2');
+}
+@font-face {
+  font-family: 'Raleway';
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_RALEWAY__) format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_IPM400__) format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url(data:font/woff2;base64,__FONT_IPM500__) format('woff2');
+}
+
+:root {
+  --bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-2: #F7F7F7;
+  --border: #C9CCD6;
+  --grid: #D6D9E0;
+  --head: #F0F1F5;
+  --text: #1B2140;
+  --text-2: #565C82;
+  --text-3: #8D91B5;
+  --navy: #071389;
+  --navy-2: #2A3699;
+  --lime: #E0E31A;
+  --lime-ink: #5C5E00;
+  --ok: #1B8A54;
+  --ok-soft: #E3F5E9;
+  --warn: #93650A;
+  --warn-soft: #FCF0D6;
+  --critical: #AE3327;
+  --critical-soft: #FBE2DF;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--navy);
+}
+.head-left { min-width: 0; display: flex; gap: 16px; align-items: flex-start; }
+.brandmark { flex-shrink: 0; display: flex; align-items: center; height: 46px; }
+.brand-logo { height: 40px; width: auto; display: block; }
+.head-text { min-width: 0; }
+.eyebrow {
+  font-family: 'Kanit', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lime-ink);
+  background: var(--lime);
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 4px;
+  margin: 0 0 10px;
+}
+.title {
+  font-family: 'Lato', sans-serif;
+  font-weight: 900;
+  font-size: clamp(24px, 4vw, 32px);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 0;
+  text-wrap: balance;
+  color: var(--text);
+}
+.subtitle {
+  color: var(--text-2);
+  margin: 8px 0 0;
+  font-size: 14px;
+  max-width: 52ch;
+}
+.head-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+.sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Kanit', sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ok);
+  background: var(--ok-soft);
+  border: 1px solid color-mix(in srgb, var(--ok) 35%, transparent);
+  padding: 5px 10px 5px 8px;
+  border-radius: 100px;
+}
+.sync-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); flex-shrink: 0; }
+.sync-time { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--text-3); }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; padding: 14px 16px; }
+.stat-label {
+  font-family: 'Kanit', sans-serif;
+  font-size: 11.5px;
+  color: var(--text-2);
+  margin: 0 0 8px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.stat-value {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--navy);
+}
+.stat-sub { font-size: 12px; color: var(--text-3); margin: 6px 0 0; }
+.stat-value.ok { color: var(--ok); }
+.stat-value.warn { color: var(--warn); }
+.stat-value.critical { color: var(--critical); }
+
+.section-label {
+  font-family: 'Kanit', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin: 0 0 10px;
+  padding: 0 4px;
+}
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--grid); margin-bottom: 32px; }
+table.rdo-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 12.5px; background: var(--surface); }
+table.rdo-table th, table.rdo-table td {
+  border: 1px solid var(--grid);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: middle;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+table.rdo-table thead th {
+  background: var(--head);
+  font-family: 'Kanit', sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  border-bottom: 2px solid var(--navy);
+}
+table.rdo-table td.mono { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+table.rdo-table td.fill-ok { background: var(--ok-soft); color: var(--ok); font-weight: 600; }
+table.rdo-table td.fill-warn { background: var(--warn-soft); color: var(--warn); font-weight: 600; }
+table.rdo-table td.fill-critical { background: var(--critical-soft); color: var(--critical); font-weight: 700; }
+table.rdo-table td .sub { display: block; font-family: 'Raleway', sans-serif; font-size: 10.5px; color: var(--text-3); font-weight: 400; margin-top: 2px; }
+
+/* tabela de atividades */
+table.rdo-table col.a-nome { width: 30%; }
+table.rdo-table col.a-ant { width: 10%; }
+table.rdo-table col.a-atual { width: 10%; }
+table.rdo-table col.a-barra { width: 32%; }
+table.rdo-table col.a-avanco { width: 18%; }
+td.progress-cell { padding: 10px; }
+.bar-track {
+  position: relative;
+  height: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--grid);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.bar-prev {
+  position: absolute; top: 0; left: 0; bottom: 0;
+  background: var(--text-3);
+  opacity: 0.35;
+}
+.bar-now {
+  position: absolute; top: 0; left: 0; bottom: 0;
+  background: var(--navy);
+}
+.bar-caption { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--text-3); margin-top: 4px; }
+
+.foot {
+  margin-top: 24px;
+  text-align: center;
+  font-family: 'Kanit', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+</style>
+
+<div class="wrap">
+  <div class="head">
+    <div class="head-left">
+      <div class="brandmark" aria-hidden="true">
+        <img class="brand-logo" alt="" src="data:image/png;base64,__LOGO_LIGHT__">
+      </div>
+      <div class="head-text">
+        <p class="eyebrow">Piloto · Detalhamento de obra</p>
+        <h1 class="title" id="obra-title">—</h1>
+        <p class="subtitle">Histórico de relatórios (criação, envio, responsáveis) e avanço percentual de cada atividade desde o relatório anterior.</p>
+      </div>
+    </div>
+    <div class="head-right">
+      <span class="sync-badge"><span class="dot"></span>Dados reais</span>
+      <span class="sync-time" id="sync-time"></span>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <p class="section-label">Histórico de relatórios</p>
+  <div class="table-wrap">
+    <table class="rdo-table">
+      <thead>
+        <tr>
+          <th>Nº</th>
+          <th>Data</th>
+          <th>Responsável</th>
+          <th>Criação</th>
+          <th>Última mudança de status</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="timeline-list"></tbody>
+    </table>
+  </div>
+
+  <p class="section-label">Avanço das atividades — último relatório</p>
+  <div class="table-wrap">
+    <table class="rdo-table">
+      <colgroup>
+        <col class="a-nome"><col class="a-ant"><col class="a-atual"><col class="a-barra"><col class="a-avanco">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Atividade</th>
+          <th>Anterior</th>
+          <th>Atual</th>
+          <th>Progresso</th>
+          <th>Avanço</th>
+        </tr>
+      </thead>
+      <tbody id="atividades-list"></tbody>
+    </table>
+  </div>
+
+  <p class="foot">Painel interno ENGM · Piloto de detalhamento por obra</p>
+</div>
+
+<script>
+(function () {
+  var DATA = __OBRA_DATA_JSON__;
+  var now = new Date();
+
+  function parseBR(s) {
+    var parts = s.split(" ");
+    var d = parts[0].split("/");
+    var t = (parts[1] || "00:00").split(":");
+    return new Date(+d[2], +d[1] - 1, +d[0], +t[0], +t[1]);
+  }
+  function calDayDiff(a, b) {
+    var da = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+    var db = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+    return Math.round((db - da) / 86400000);
+  }
+  function fmtDuration(ms) {
+    var mins = Math.round(ms / 60000);
+    if (mins < 1) return "poucos minutos";
+    if (mins < 60) return mins + "min";
+    var hours = Math.round(mins / 60);
+    if (hours < 24) return hours + "h";
+    var days = Math.round(hours / 24);
+    return days + (days === 1 ? " dia" : " dias");
+  }
+  var fmtDate = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit" });
+  var fmtTime = new Intl.DateTimeFormat("pt-BR", { hour: "2-digit", minute: "2-digit" });
+
+  document.getElementById("obra-title").textContent = DATA.obra;
+  document.title = "Detalhamento — " + DATA.obra;
+
+  var rows = DATA.timeline.map(function (r) {
+    var dataRef = parseBR(r.data);
+    var criado = parseBR(r.criadoHora);
+    var modificado = parseBR(r.modificadoHora);
+    var criacaoDias = calDayDiff(dataRef, criado);
+    var criacaoLevel = criacaoDias <= 0 ? "ok" : (criacaoDias === 1 ? "warn" : "critical");
+    var criacaoLabel = criacaoDias <= 0 ? "mesmo dia" : "+" + criacaoDias + (criacaoDias === 1 ? " dia" : " dias");
+    var enviado = r.statusId !== 1;
+    var envioLevel, envioLabel;
+    if (!enviado) {
+      envioLevel = "critical";
+      envioLabel = "ainda não enviado";
+    } else {
+      var hrs = (modificado - criado) / 3600000;
+      envioLevel = hrs < 24 ? "ok" : (hrs < 72 ? "warn" : "critical");
+      envioLabel = fmtDuration(modificado - criado);
+    }
+    var statusLevel = !enviado ? "warn" : (r.statusId === 4 ? "ok" : "warn");
+    return {
+      numero: r.numero, data: dataRef, criado: criado, modificado: modificado,
+      criadoPor: r.criadoPor, modificadoPor: r.modificadoPor,
+      criacaoLabel: criacaoLabel, criacaoLevel: criacaoLevel,
+      envioLabel: envioLabel, envioLevel: envioLevel,
+      statusDescricao: r.statusDescricao, statusLevel: statusLevel
+    };
+  });
+
+  var ultimo = rows[0];
+  var stats = document.getElementById("stats");
+  stats.innerHTML =
+    '<div class="stat"><p class="stat-label">Responsável atual</p><p class="stat-value">' + (ultimo ? ultimo.criadoPor : "—") + '</p></div>' +
+    '<div class="stat"><p class="stat-label">Status do último RDO</p><p class="stat-value ' + (ultimo ? ultimo.statusLevel : "") + '">' + (ultimo ? ultimo.statusDescricao : "—") + '</p></div>' +
+    '<div class="stat"><p class="stat-label">Latência de criação</p><p class="stat-value ' + (ultimo ? ultimo.criacaoLevel : "") + '">' + (ultimo ? ultimo.criacaoLabel : "—") + '</p><p class="stat-sub">vs. dia de referência</p></div>' +
+    '<div class="stat"><p class="stat-label">Latência de envio</p><p class="stat-value ' + (ultimo ? ultimo.envioLevel : "") + '">' + (ultimo ? ultimo.envioLabel : "—") + '</p><p class="stat-sub">criação → mudança de status</p></div>';
+
+  var timelineList = document.getElementById("timeline-list");
+  timelineList.innerHTML = rows.map(function (r) {
+    return '<tr>' +
+      '<td class="mono">nº' + r.numero + '</td>' +
+      '<td class="mono">' + fmtDate.format(r.data) + '</td>' +
+      '<td>' + r.criadoPor + '</td>' +
+      '<td class="fill-' + r.criacaoLevel + '">' + r.criacaoLabel + '<span class="sub">' + fmtDate.format(r.criado) + ' · ' + fmtTime.format(r.criado) + '</span></td>' +
+      '<td class="fill-' + r.envioLevel + '">' + r.envioLabel + (r.modificadoPor ? '<span class="sub">por ' + r.modificadoPor + '</span>' : '') + '</td>' +
+      '<td class="fill-' + r.statusLevel + '">' + r.statusDescricao + '</td>' +
+    '</tr>';
+  }).join("");
+
+  var atividadesList = document.getElementById("atividades-list");
+  atividadesList.innerHTML = DATA.atividades.map(function (a) {
+    if (a.atual === null || a.anterior === null) {
+      return '<tr>' +
+        '<td>' + a.descricao + '</td>' +
+        '<td class="mono">—</td><td class="mono">—</td>' +
+        '<td class="progress-cell"><span class="bar-caption">sem controle percentual</span></td>' +
+        '<td class="mono">—</td>' +
+      '</tr>';
+    }
+    var delta = a.atual - a.anterior;
+    var deltaLevel = delta > 0 ? "ok" : (delta === 0 ? "warn" : "critical");
+    var deltaLabel = (delta > 0 ? "+" : "") + delta + "%";
+    return '<tr>' +
+      '<td>' + a.descricao + '</td>' +
+      '<td class="mono">' + a.anterior + '%</td>' +
+      '<td class="mono">' + a.atual + '%</td>' +
+      '<td class="progress-cell">' +
+        '<div class="bar-track">' +
+          '<div class="bar-prev" style="width:' + a.anterior + '%"></div>' +
+          '<div class="bar-now" style="width:' + a.atual + '%"></div>' +
+        '</div>' +
+      '</td>' +
+      '<td class="fill-' + deltaLevel + ' mono">' + deltaLabel + '</td>' +
+    '</tr>';
+  }).join("");
+
+  document.getElementById("sync-time").textContent =
+    "Sincronizado em " + fmtDate.format(DATA.syncedAt ? new Date(DATA.syncedAt) : now) + " às " + fmtTime.format(DATA.syncedAt ? new Date(DATA.syncedAt) : now);
+})();
+</script>
