@@ -1,0 +1,55 @@
+name: Atualizar Painel RDO
+
+on:
+  schedule:
+    # 03:00 no horário de Brasília (UTC-3) = 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Gerar config.json a partir do secret
+        run: |
+          printf '{"token": "%s", "artifactUrl": ""}' "$RDO_API_TOKEN" > rdo-panel/config.json
+        env:
+          RDO_API_TOKEN: ${{ secrets.RDO_API_TOKEN }}
+
+      - name: Rodar build.js
+        working-directory: rdo-panel
+        run: node build.js
+
+      - name: Preparar site para publicação
+        run: |
+          mkdir -p _site
+          cp rdo-panel/rdo-panel-output.html _site/index.html
+
+      - name: Upload do artifact do Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
