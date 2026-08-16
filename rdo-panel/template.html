@@ -254,13 +254,14 @@ table.rdo-table {
   font-size: 12.5px;
   background: var(--surface);
 }
-table.rdo-table col.c-obra { width: 20%; }
-table.rdo-table col.c-resp { width: 14%; }
-table.rdo-table col.c-rel { width: 7%; }
-table.rdo-table col.c-criacao { width: 10%; }
-table.rdo-table col.c-envio { width: 13%; }
-table.rdo-table col.c-ultimo { width: 20%; }
-table.rdo-table col.c-status { width: 16%; }
+table.rdo-table col.c-obra { width: 18%; }
+table.rdo-table col.c-resp { width: 13%; }
+table.rdo-table col.c-rel { width: 6%; }
+table.rdo-table col.c-criacao { width: 9%; }
+table.rdo-table col.c-envio { width: 12%; }
+table.rdo-table col.c-ultimo { width: 18%; }
+table.rdo-table col.c-status { width: 14%; }
+table.rdo-table col.c-realizado { width: 10%; }
 table.rdo-table th,
 table.rdo-table td {
   border: 1px solid var(--grid);
@@ -370,34 +371,6 @@ table.detail-table td .sub { display: block; font-family: 'Raleway', sans-serif;
   flex-wrap: wrap;
 }
 .detail-table-flex { flex: 1 1 460px; min-width: 0; }
-.detail-side { flex: 0 0 170px; display: flex; }
-.realizado-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 4px;
-  background: var(--head);
-  border: 1px solid var(--navy);
-  padding: 16px 12px;
-}
-.realizado-card .stat-label { font-size: 11px; }
-.realizado-value {
-  font-family: 'Kanit', sans-serif;
-  font-weight: 700;
-  font-size: 34px;
-  line-height: 1;
-  margin: 0;
-}
-.realizado-value.ok { color: var(--ok); }
-.realizado-value.warn { color: var(--warn); }
-.realizado-value.critical { color: var(--critical); }
-.realizado-card .stat-sub { font-size: 10.5px; margin: 0; }
-@media (max-width: 640px) {
-  .detail-side { flex-basis: auto; }
-}
 
 .inactive-summary {
   display: flex;
@@ -478,7 +451,7 @@ table.detail-table td .sub { display: block; font-family: 'Raleway', sans-serif;
   <div class="table-wrap">
     <table class="rdo-table">
       <colgroup>
-        <col class="c-obra"><col class="c-resp"><col class="c-rel"><col class="c-criacao"><col class="c-envio"><col class="c-ultimo"><col class="c-status">
+        <col class="c-obra"><col class="c-resp"><col class="c-rel"><col class="c-criacao"><col class="c-envio"><col class="c-ultimo"><col class="c-status"><col class="c-realizado">
       </colgroup>
       <thead>
         <tr>
@@ -489,6 +462,7 @@ table.detail-table td .sub { display: block; font-family: 'Raleway', sans-serif;
           <th>Envio</th>
           <th>Último RDO</th>
           <th>Status</th>
+          <th>Realizado</th>
         </tr>
       </thead>
       <tbody id="active-list"></tbody>
@@ -620,24 +594,10 @@ table.detail-table td .sub { display: block; font-family: 'Raleway', sans-serif;
       '</tr></thead><tbody>' + rows + '</tbody></table></div>';
   }
 
-  function buildRealizadoCard(p) {
-    if (!p || p.realizado === null || p.realizado === undefined) {
-      return '<div class="realizado-card"><p class="stat-label">Realizado</p><p class="stat-sub">Cronograma indisponível</p></div>';
-    }
-    var realizado = Number(p.realizado) || 0;
-    var level = realizado >= 70 ? "ok" : (realizado >= 30 ? "warn" : "critical");
-    return '<div class="realizado-card">' +
-      '<p class="stat-label">Realizado</p>' +
-      '<p class="realizado-value ' + level + '">' + realizado.toFixed(2) + '%</p>' +
-      '<p class="stat-sub">avanço geral do cronograma</p>' +
-    '</div>';
-  }
-
   function buildDetailContent(o) {
     return '<p class="detail-heading">Histórico de relatórios</p>' +
       '<div class="detail-row-layout">' +
         '<div class="detail-table-flex">' + buildTimelineTable(o.timeline || []) + '</div>' +
-        '<div class="detail-side">' + buildRealizadoCard(o.progresso) + '</div>' +
       '</div>';
   }
 
@@ -702,8 +662,12 @@ table.detail-table td .sub { display: block; font-family: 'Raleway', sans-serif;
         '<span class="sub">' + (o.statusId === 1 ? "criado, não enviado" : "enviado") + ' · ' + relLabel(o.diff) + '</span>' +
       '</td>' +
       '<td class="fill-' + o.level + '">' + pillLabel(o.level, o.diff, o.statusId) + '</td>' +
+      (function () {
+        var r = realizadoNaDataInfo(o.progresso ? o.progresso.realizado : null);
+        return '<td class="mono' + (r.level ? ' fill-' + r.level : '') + '">' + r.label + '</td>';
+      })() +
     '</tr>';
-    var detail = '<tr class="row-detail" id="' + rowId + '"><td colspan="7">' +
+    var detail = '<tr class="row-detail" id="' + rowId + '"><td colspan="8">' +
       '<div class="detail-block">' + buildDetailContent(o) + '</div>' +
     '</td></tr>';
     return summary + detail;
